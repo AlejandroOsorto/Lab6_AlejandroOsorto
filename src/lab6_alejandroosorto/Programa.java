@@ -75,5 +75,9 @@ public class Programa
         this.genero = genero;
     }
     
-    
+    @Override
+    public String toString()
+    {
+        return nombre + "/" + puntuacion + "/" + año + "/" + tipo + "/" + genero;
+    }
 }
