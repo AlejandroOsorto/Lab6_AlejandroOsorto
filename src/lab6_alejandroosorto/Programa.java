@@ -78,6 +78,6 @@ public class Programa
     @Override
     public String toString()
     {
-        return nombre + "/" + puntuacion + "/" + año + "/" + tipo + "/" + genero;
+        return nombre + "/" + puntuacion + "/" + año + "/" + tipo + "/" + genero+"\n";
     }
 }

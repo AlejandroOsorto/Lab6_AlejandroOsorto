@@ -1,9 +1,12 @@
 package lab6_alejandroosorto;
 
+import java.io.*;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 /**
@@ -69,9 +72,9 @@ public class Principal extends javax.swing.JFrame
         BTN_GuardarLista = new javax.swing.JButton();
         BTN_AgregarALista = new javax.swing.JButton();
         P_MostrarLista = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        L_ProgramasLista = new javax.swing.JList<>();
         BTN_CargarLista = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TEXT_Lista = new javax.swing.JTextArea();
 
         MI_Modificar.setText("Modificar");
         M_CD_SubMenuListar.add(MI_Modificar);
@@ -301,25 +304,21 @@ public class Principal extends javax.swing.JFrame
 
         P_MostrarLista.setBackground(new java.awt.Color(143, 173, 153));
 
-        L_ProgramasLista.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
-                L_ProgramasListaMouseClicked(evt);
-            }
-        });
-        L_ProgramasLista.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
-                L_ProgramasListaKeyPressed(evt);
-            }
-        });
-        jScrollPane2.setViewportView(L_ProgramasLista);
-
         BTN_CargarLista.setBackground(new java.awt.Color(50, 56, 58));
         BTN_CargarLista.setForeground(new java.awt.Color(255, 255, 255));
         BTN_CargarLista.setText("Cargar una lista");
+        BTN_CargarLista.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                BTN_CargarListaMouseClicked(evt);
+            }
+        });
+
+        TEXT_Lista.setEditable(false);
+        TEXT_Lista.setColumns(20);
+        TEXT_Lista.setRows(5);
+        jScrollPane3.setViewportView(TEXT_Lista);
 
         javax.swing.GroupLayout P_MostrarListaLayout = new javax.swing.GroupLayout(P_MostrarLista);
         P_MostrarLista.setLayout(P_MostrarListaLayout);
@@ -329,17 +328,17 @@ public class Principal extends javax.swing.JFrame
                 .addGap(21, 21, 21)
                 .addGroup(P_MostrarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BTN_CargarLista)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(378, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
         P_MostrarListaLayout.setVerticalGroup(
             P_MostrarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, P_MostrarListaLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(BTN_CargarLista)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(79, 79, 79)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         PPrincipal.addTab("Mostrar una lista", P_MostrarLista);
@@ -366,7 +365,7 @@ public class Principal extends javax.swing.JFrame
     {//GEN-HEADEREND:event_BTN_GuardarListaMouseClicked
         // TODO add your handling code here:
         String nombre;
-        ArrayList<Programa> lista;
+        ArrayList lista = new ArrayList();
         
         if (CT_NombreCL.getText().isBlank())
         {
@@ -375,7 +374,39 @@ public class Principal extends javax.swing.JFrame
         else
         {
             nombre = CT_NombreCL.getText();
-            L_ProgramasSeleccionadosCL.getModel();
+            DefaultListModel mLista = (DefaultListModel) L_ProgramasSeleccionadosCL.getModel();
+            for (int i = 0; i < lista.size(); i++)            
+            {
+                lista.add((Programa)mLista.get(i));
+            }
+            
+            JFileChooser FC = new JFileChooser();
+            
+            int seleccion = FC.showSaveDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION)
+            {
+                File dir = FC.getSelectedFile();
+                boolean check = dir.mkdir();
+                if (check)
+                {
+                    JOptionPane.showMessageDialog(null, "Archivo guardado");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Archivo no fue guardado");
+                }
+            }
+            /*
+            ClaudiList CL = new ClaudiList("./"+nombre+".txt");
+            CL.cargarArchivo();
+            
+            for (int i = 0; i < lista.size(); i++)            
+            {
+                CL.getLista().add((Programa)lista.get(i));
+            }
+            
+            CL.EscribirArchivo();*/
+            
         }
         
         
@@ -416,33 +447,6 @@ public class Principal extends javax.swing.JFrame
             }
         }
     }//GEN-LAST:event_L_ProgramasSeleccionadosCLMouseClicked
-
-    private void L_ProgramasListaKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_L_ProgramasListaKeyPressed
-    {//GEN-HEADEREND:event_L_ProgramasListaKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_DELETE)
-        {
-            if (L_ProgramasLista.getSelectedIndex() >= 0)
-            {
-                DefaultListModel mLista = (DefaultListModel) L_ProgramasLista.getModel();
-                mLista.remove(L_ProgramasLista.getSelectedIndex());
-                L_ProgramasLista.setModel(mLista);
-                JOptionPane.showMessageDialog(this, "Programa eliminado exitosamente de la lista");
-            }
-        }
-    }//GEN-LAST:event_L_ProgramasListaKeyPressed
-
-    private void L_ProgramasListaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_L_ProgramasListaMouseClicked
-    {//GEN-HEADEREND:event_L_ProgramasListaMouseClicked
-        // TODO add your handling code here:
-        if (L_ProgramasLista.getSelectedIndex() >= 0)
-        {
-            if (evt.isMetaDown())
-            {
-                M_CD_SubMenuListar.show(evt.getComponent(), evt.getX(), evt.getY());
-            }
-        }
-    }//GEN-LAST:event_L_ProgramasListaMouseClicked
 
     private void CT_AñoProgramaKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_CT_AñoProgramaKeyTyped
     {//GEN-HEADEREND:event_CT_AñoProgramaKeyTyped
@@ -541,6 +545,45 @@ public class Principal extends javax.swing.JFrame
         }
     }//GEN-LAST:event_MI_EliminarListaActionPerformed
 
+    private void BTN_CargarListaMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_BTN_CargarListaMouseClicked
+    {//GEN-HEADEREND:event_BTN_CargarListaMouseClicked
+        // TODO add your handling code here:
+        TEXT_Lista.setText("");
+        File fichero = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        try
+        {
+            JFileChooser FC = new JFileChooser("./");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+            FC.setFileFilter(filtro);
+            int seleccion = FC.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION)
+            {
+                fichero = FC.getSelectedFile();
+                fr = new FileReader(fichero);
+                br = new BufferedReader(fr);
+                String linea;
+                TEXT_Lista.setText("");
+                while ((linea = br.readLine()) != null)
+                {
+                    TEXT_Lista.append(linea + "\n");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            br.close();
+            fr.close();
+        }
+        catch (Exception ex) {}
+        
+    }//GEN-LAST:event_BTN_CargarListaMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -597,7 +640,6 @@ public class Principal extends javax.swing.JFrame
     private javax.swing.JTextField CT_AñoPrograma;
     private javax.swing.JTextField CT_NombreCL;
     private javax.swing.JTextField CT_NombrePrograma;
-    private javax.swing.JList<String> L_ProgramasLista;
     private javax.swing.JList<String> L_ProgramasSeleccionadosCL;
     private javax.swing.JMenuItem MI_EliminarLista;
     private javax.swing.JMenuItem MI_EliminarPrograma;
@@ -609,6 +651,7 @@ public class Principal extends javax.swing.JFrame
     private javax.swing.JPanel P_AgregarPrograma;
     private javax.swing.JPanel P_MostrarLista;
     private javax.swing.JSpinner SP_Puntuacion;
+    private javax.swing.JTextArea TEXT_Lista;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -618,6 +661,6 @@ public class Principal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }
