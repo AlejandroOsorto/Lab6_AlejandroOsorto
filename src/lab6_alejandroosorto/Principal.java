@@ -380,32 +380,51 @@ public class Principal extends javax.swing.JFrame
                 lista.add((Programa)mLista.get(i));
             }
             
-            JFileChooser FC = new JFileChooser();
-            
-            int seleccion = FC.showSaveDialog(this);
-            if (seleccion == JFileChooser.APPROVE_OPTION)
-            {
-                File dir = FC.getSelectedFile();
-                boolean check = dir.mkdir();
-                if (check)
-                {
-                    JOptionPane.showMessageDialog(null, "Archivo guardado");
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Archivo no fue guardado");
-                }
-            }
-            /*
-            ClaudiList CL = new ClaudiList("./"+nombre+".txt");
-            CL.cargarArchivo();
+            ClaudiList CL = new ClaudiList();
             
             for (int i = 0; i < lista.size(); i++)            
             {
                 CL.getLista().add((Programa)lista.get(i));
             }
             
-            CL.EscribirArchivo();*/
+            JFileChooser FC = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+            FC.addChoosableFileFilter(filtro);
+            int seleccion = FC.showSaveDialog(this);
+            
+            FileWriter fw = null;
+            BufferedWriter bw = null;
+            if (seleccion == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    File fichero = null;
+                    if (FC.getFileFilter().getDescription().equals("Archivos de texto"))
+                    {
+                        fichero = new File(FC.getSelectedFile().getPath()+".txt");
+                    }
+                    else
+                    {
+                        fichero = FC.getSelectedFile();
+                    }
+                    fw = new FileWriter(fichero);
+                    bw = new BufferedWriter(fw);
+                    bw.write("prueba");
+                    bw.flush();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                try
+                {
+                    bw.close();
+                    fw.close();
+                }
+                catch (Exception e2) {}
+            }
+            
+            
             
         }
         
