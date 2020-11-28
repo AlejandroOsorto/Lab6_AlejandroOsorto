@@ -399,7 +399,7 @@ public class Principal extends javax.swing.JFrame
                 DefaultListModel mLista = (DefaultListModel) L_ProgramasSeleccionadosCL.getModel();
                 mLista.remove(L_ProgramasSeleccionadosCL.getSelectedIndex());
                 L_ProgramasSeleccionadosCL.setModel(mLista);
-                JOptionPane.showMessageDialog(this, "Estudiante eliminado exitosamente de la lista");
+                JOptionPane.showMessageDialog(this, "Programa eliminado exitosamente de la lista");
                 if (mLista.isEmpty())
                 {
                     BTN_GuardarLista.setEnabled(false);
