@@ -2,6 +2,8 @@ package lab6_alejandroosorto;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -10,7 +12,7 @@ import java.util.Scanner;
 public class ClaudiList
 {
     private String nombre;
-    private ArrayList<Programa> lista;
+    private ArrayList lista;
     private File archivo;
 
     public ClaudiList()
@@ -60,25 +62,50 @@ public class ClaudiList
         return nombre + ": " + lista;
     }
     
-    public void EscribirArchivo() throws IOException
+    public void EscribirArchivo()
     {
-        FileWriter fw = null;
-        BufferedWriter bw = null;
-        try
-        {
-            for (Programa t : lista)
+        JFileChooser FC = new JFileChooser();
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+            FC.addChoosableFileFilter(filtro);
+            int seleccion = FC.showSaveDialog(null);
+            
+            FileWriter fw = null;
+            BufferedWriter bw = null;
+            if (seleccion == JFileChooser.APPROVE_OPTION)
             {
-                bw.write(t.getNombre());
-                bw.write(t.getPuntuacion());
-                bw.write(t.getAño());
-                bw.write(t.getTipo());
-                bw.write(t.getGenero());
+                try
+                {
+                    File fichero = null;
+                    if (FC.getFileFilter().getDescription().equals("Archivos de texto"))
+                    {
+                        fichero = new File(FC.getSelectedFile().getPath()+".txt");
+                    }
+                    else
+                    {
+                        fichero = FC.getSelectedFile();
+                    }
+                    fw = new FileWriter(fichero);
+                    bw = new BufferedWriter(fw);
+                    
+                    for (int i = 0; i < lista.size(); i++)                    
+                    {
+                        bw.write("" + lista.get(i));
+                    }
+                    
+                    
+                    bw.flush();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                try
+                {
+                    bw.close();
+                    fw.close();
+                }
+                catch (Exception e2) {}
             }
-            bw.flush();
-        }
-        catch (Exception ex) {}
-        bw.close();
-        fw.close();
     }
     
     public void cargarArchivo()

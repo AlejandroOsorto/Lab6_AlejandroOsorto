@@ -381,65 +381,12 @@ public class Principal extends javax.swing.JFrame
             }
             
             ClaudiList CL = new ClaudiList();
+            CL.setNombre(nombre);
             
-            for (int i = 0; i < lista.size(); i++)            
-            {
-                CL.getLista().add((Programa)lista.get(i));
-            }
+            CL.setLista(lista);
             
-            JFileChooser FC = new JFileChooser();
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
-            FC.addChoosableFileFilter(filtro);
-            int seleccion = FC.showSaveDialog(this);
-            
-            FileWriter fw = null;
-            BufferedWriter bw = null;
-            if (seleccion == JFileChooser.APPROVE_OPTION)
-            {
-                try
-                {
-                    File fichero = null;
-                    if (FC.getFileFilter().getDescription().equals("Archivos de texto"))
-                    {
-                        fichero = new File(FC.getSelectedFile().getPath()+".txt");
-                    }
-                    else
-                    {
-                        fichero = FC.getSelectedFile();
-                    }
-                    fw = new FileWriter(fichero);
-                    bw = new BufferedWriter(fw);
-                    
-                    for (int i = 0; i < lista.size(); i++)                    
-                    {
-                        bw.write("" + lista.get(i));
-                        if (i < lista.size())
-                        {
-                            bw.write("\n");
-                        }
-                    }
-                    
-                    
-                    bw.flush();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-                try
-                {
-                    bw.close();
-                    fw.close();
-                }
-                catch (Exception e2) {}
-            }
-            
-            
-            
+            CL.EscribirArchivo();
         }
-        
-        
-        
     }//GEN-LAST:event_BTN_GuardarListaMouseClicked
 
     private void L_ProgramasSeleccionadosCLKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_L_ProgramasSeleccionadosCLKeyPressed
