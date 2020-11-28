@@ -409,7 +409,17 @@ public class Principal extends javax.swing.JFrame
                     }
                     fw = new FileWriter(fichero);
                     bw = new BufferedWriter(fw);
-                    bw.write("prueba");
+                    
+                    for (int i = 0; i < lista.size(); i++)                    
+                    {
+                        bw.write("" + lista.get(i));
+                        if (i < lista.size())
+                        {
+                            bw.write("\n");
+                        }
+                    }
+                    
+                    
                     bw.flush();
                 }
                 catch (Exception e)
